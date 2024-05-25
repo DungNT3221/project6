@@ -13,7 +13,9 @@ function UserDetail() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`https://9mlf5s-8081.csb.app/api/user/${userId}`);
+        const response = await axios.get(
+          `https://7kwsvx-8000.csb.app/api/user/${userId}`,
+        );
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -29,12 +31,13 @@ function UserDetail() {
 
   return (
     <>
-      <Typography variant="body1">
-        Thông tin của người dùng
-      </Typography>
+      <Typography variant="body1">Thông tin của người dùng</Typography>
       <strong>Tên:</strong> {user.user_name} <br />
-      <strong>Địa chỉ:</strong> {user.location}<br />
-      <strong>Mô tả:</strong> <span dangerouslySetInnerHTML={{ __html: user.description }}></span><br />
+      <strong>Địa chỉ:</strong> {user.location}
+      <br />
+      <strong>Mô tả:</strong>{" "}
+      <span dangerouslySetInnerHTML={{ __html: user.description }}></span>
+      <br />
       <strong>Nghề nghiệp:</strong> {user.occupation}
     </>
   );

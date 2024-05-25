@@ -27,7 +27,7 @@ function UserList() {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          "https://9mlf5s-8081.csb.app/api/user/list"
+          "https://7kwsvx-8000.csb.app/api/user/list",
         );
         let fetchedUsers = response.data.users;
 
@@ -35,11 +35,11 @@ function UserList() {
         fetchedUsers = fetchedUsers.map((user) =>
           user._id === loggedInUserId
             ? { ...user, user_name: `Bạn (${loggedInUserName})` }
-            : user
+            : user,
         );
 
         fetchedUsers.sort((a, b) =>
-          a._id === loggedInUserId ? -1 : b._id === loggedInUserId ? 1 : 0
+          a._id === loggedInUserId ? -1 : b._id === loggedInUserId ? 1 : 0,
         );
 
         setUsers(fetchedUsers);

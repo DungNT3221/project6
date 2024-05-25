@@ -18,7 +18,7 @@ function TopBar() {
         console.log("User Id:", userId);
         if (userId) {
           const response = await axios.get(
-            `https://9mlf5s-8081.csb.app/api/user/${userId}`
+            `https://7kwsvx-8000.csb.app/api/user/${userId}`,
           );
           console.log("User data:", response.data);
           setUserName(response.data.user_name);
@@ -37,11 +37,13 @@ function TopBar() {
   const getUserIdFromPathname = (pathname) => {
     const parts = pathname.split("/");
     console.log("Parts:", parts);
-    const userIdIndex = parts.findIndex((part) => part === "users" || part === "photos");
+    const userIdIndex = parts.findIndex(
+      (part) => part === "users" || part === "photos",
+    );
     if (userIdIndex !== -1 && userIdIndex + 1 < parts.length) {
       return parts[userIdIndex + 1];
     }
-    
+
     return null;
   };
 
@@ -63,7 +65,7 @@ function TopBar() {
   return (
     <AppBar className="topbar-appBar" position="absolute">
       <Toolbar>
-        { user_name && (
+        {user_name && (
           <Typography variant="h6" color="inherit">
             Xin chào {user_name}
           </Typography>

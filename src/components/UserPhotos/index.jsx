@@ -30,7 +30,7 @@ const UserPhotos = () => {
     const fetchPhotos = async () => {
       try {
         const response = await axios.get(
-          `https://9mlf5s-8081.csb.app/api/photo/photosOfUser/${userId}`
+          `https://7kwsvx-8000.csb.app/api/photo/photosOfUser/${userId}`,
         );
         setPhotos(response.data);
         setError(null);
@@ -56,21 +56,22 @@ const UserPhotos = () => {
       const userName = localStorage.getItem("user_name");
       const token = localStorage.getItem("token");
 
+      //tạo comment
       const response = await axios.post(
-        `https://9mlf5s-8081.csb.app/api/photo/${photoId}/comments`,
+        `https://7kwsvx-8000.csb.app/api/photo/${photoId}/comments`,
         { comment: commentText, user_id: userId, user_name: userName },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       // Update the photos state to reflect the new comment
       setPhotos((prevPhotos) =>
         prevPhotos.map((photo) =>
-          photo._id === photoId ? response.data : photo
-        )
+          photo._id === photoId ? response.data : photo,
+        ),
       );
 
       setCommentText(""); // Clear the comment input field
@@ -95,14 +96,14 @@ const UserPhotos = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `https://9mlf5s-8081.csb.app/api/photo/uploadPhoto`,
+        `https://7kwsvx-8000.csb.app/api/photo/uploadPhoto`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       // Add the new photo to the photos state
@@ -180,7 +181,7 @@ const Photo = ({
           <strong>Ngày đăng:</strong> {new Date(date_time).toLocaleString()}
         </Typography>
         <img
-          src={`https://9mlf5s-8081.csb.app/uploads/${file_name}`}
+          src={`https://7kwsvx-8000.csb.app/uploads/${file_name}`}
           alt="Ảnh"
           style={{
             maxWidth: "100%",

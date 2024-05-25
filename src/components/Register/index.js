@@ -9,6 +9,8 @@ import {
   Typography,
   Container,
   CssBaseline,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
@@ -20,28 +22,51 @@ export default function Register() {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [occupation, setOccupation] = useState("");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null); // Thêm trạng thái thông báo thành công
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Kiểm tra xem tất cả các trường có được điền đầy đủ hay không
+    if (!user_name || !password || !location || !description || !occupation) {
+      setError("Vui lòng nhập đầy đủ tất cả các trường thông tin");
+      return;
+    }
+
     try {
       const response = await axios.post(
-        "https://9mlf5s-8081.csb.app/api/user/register",
+        "https://7kwsvx-8000.csb.app/api/user/register",
         {
           user_name,
           password,
           location,
           description,
           occupation,
-        }
+        },
       );
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user_id", response.data._id);
-      localStorage.setItem("user_name", response.data.user_name);
-      navigate("/");
+      setSuccess("Đăng ký thành công!"); // Thiết lập thông báo thành công
+      setTimeout(() => {
+        navigate("/login"); // Điều hướng sau 3 giây
+      }, 3000);
     } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setError("Tài khoản đã tồn tại, vui lòng chọn tên tài khoản khác.");
+      } else if (error.response) {
+        setError(
+          `Đăng ký thất bại: ${error.response.data.message || error.response.statusText}`,
+        );
+      } else {
+        setError("Đăng ký thất bại: Đã xảy ra lỗi, vui lòng thử lại sau");
+      }
       console.error("Registration failed:", error);
     }
+  };
+
+  const handleClose = () => {
+    setError(null);
+    setSuccess(null); // Đóng thông báo thành công
   };
 
   return (
@@ -136,6 +161,26 @@ export default function Register() {
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {error}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={!!success}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {success}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
